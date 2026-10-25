@@ -7,13 +7,13 @@ Backend for the ParkingBusiness pilot in building `PB-AMS-2M8D`: check-in, check
 Work in progress. The workspace is set up (PB-01): NestJS app, lint, tests, CI and agent instructions. The endpoints are not built yet.
 
 - The API starts, but has no routes.
-- Prisma is installed with an empty schema (no models, no migrations). Postgres and Docker are not set up yet.
+- Postgres runs in Docker (`docker compose up -d db`). The Prisma schema and the init migration (zones, spaces, sessions, and the layout of `PB-AMS-2M8D`) are in `api/prisma/`.
 - There are no specs in `specs/` yet.
 - `ROADMAP.md` does not exist yet.
 
 ## Stack
 
-Node 24, TypeScript, NestJS 12 (ESM), Prisma 7 with the `@prisma/adapter-pg` driver adapter, Jest and ESLint. Planned: PostgreSQL 16 and Docker.
+Node 24, TypeScript, NestJS 12 (ESM), Prisma 7 with the `@prisma/adapter-pg` driver adapter, Jest and ESLint. PostgreSQL 16 and Docker.
 
 ## Getting started
 
@@ -27,9 +27,10 @@ git clone --recurse-submodules <repo-url>
 cd api
 npm ci
 
-# prisma.config.ts requires DATABASE_URL. `prisma generate` never connects,
-# so any valid URL works until Postgres is set up.
-export DATABASE_URL=postgresql://user:pass@localhost:5432/db
+# prisma.config.ts requires DATABASE_URL
+docker compose -f ../docker-compose.yml up -d db
+export DATABASE_URL=postgresql://parkingbusiness:parkingbusiness@localhost:5432/parkingbusiness
+npx prisma migrate deploy
 npx prisma generate
 
 npm run start:dev   # listens on port 3000, or $PORT

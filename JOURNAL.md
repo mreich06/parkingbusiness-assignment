@@ -76,3 +76,8 @@ Committed some changes already, saw more things to cut out, refined the spec:
 
 - Added "Definitions" section which is not part of template, removed it and trimmed the wording
 - hardcoded the prices and spaces, so I added "Model as data, not constants"
+
+19:49 
+Asked agent to set up docker yml file, create database schema, migration and seed data
+It just added Zone, Space, Session which is all that is needed for PB-03 and looks good
+

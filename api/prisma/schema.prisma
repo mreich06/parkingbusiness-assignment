@@ -6,3 +6,37 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum VehicleType {
+  CAR
+  MOTOR
+}
+
+// What a group of spaces serves: residents (any vehicle) or visitors of one vehicle type
+model Zone {
+  id          Int          @id @default(autoincrement())
+  buildingId  String
+  isResident  Boolean
+  vehicleType VehicleType?
+  spaces      Space[]
+}
+
+model Space {
+  id         Int       @id @default(autoincrement())
+  buildingId String
+  number     Int
+  zoneId     Int
+  zone       Zone      @relation(fields: [zoneId], references: [id])
+  sessions   Session[]
+
+  @@unique([buildingId, number])
+}
+
+model Session {
+  id           String    @id @default(uuid()) @db.Uuid
+  spaceId      Int
+  space        Space     @relation(fields: [spaceId], references: [id])
+  licensePlate String
+  checkedInAt  DateTime  @default(now()) @db.Timestamptz
+  checkedOutAt DateTime? @db.Timestamptz
+}

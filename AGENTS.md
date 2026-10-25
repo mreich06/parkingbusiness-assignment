@@ -15,19 +15,18 @@ A full-stack parking garage management system for ParkingBusiness, piloting in b
 
 ## Commands
 
-Run from `api/` unless noted. A command marked (todo) does not work yet.
+Run from `api/` unless noted. Prisma commands need `DATABASE_URL` set (local: `postgresql://parkingbusiness:parkingbusiness@localhost:5432/parkingbusiness`).
 
-- Start Postgres (repo root): `docker compose up -d db` (todo)
-- Start the app and Postgres (repo root): `docker compose up -d` (todo)
-- Stop everything (repo root): `docker compose down` (todo)
-- Follow logs (repo root): `docker compose logs -f` (todo)
+- Start Postgres (repo root): `docker compose up -d db`
+- Stop Postgres (repo root): `docker compose down`
+- Follow logs (repo root): `docker compose logs -f`
 - Test: `npm test` (use Node 24: `nvm use 24`)
 - E2E test: `npm run test:e2e`
 - Lint: `npm run lint`
 - Typecheck: `npm run typecheck`
 - Build: `npm run build`
-- Create and apply a migration locally: `npx prisma migrate dev` (todo)
-- Apply existing migrations (CI/production): `npx prisma migrate deploy` (todo)
+- Create and apply a migration locally: `npx prisma migrate dev`
+- Apply existing migrations (CI/production): `npx prisma migrate deploy`
 - Regenerate the Prisma client after schema changes: `npx prisma generate` (needs `DATABASE_URL` set; it never connects)
 - Install the simulator (from `simulator/`): `npm install`
 - Send a signed payment webhook (from `simulator/`): `WEBHOOK_SECRET=<secret> npm run send -- --session <parkingSessionId> --amount 1500`
