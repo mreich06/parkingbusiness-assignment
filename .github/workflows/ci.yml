@@ -16,9 +16,9 @@ jobs:
           cache: npm
           cache-dependency-path: api/package-lock.json
       - run: npm ci
-      # - run: npx prisma generate
-      #   env:
-      #     DATABASE_URL: postgresql://user:pass@localhost:5432/db
+      - run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://user:pass@localhost:5432/db
       - run: npm run lint
       - run: npx tsc --noEmit
       # Backstop for the lint rules: catches console calls and skipped or focused tests even if someone adds an eslint-disable comment
@@ -29,3 +29,6 @@ jobs:
           fi
       - run: npm test
       - run: npm audit --audit-level=high
+      - name: Audit simulator dependencies
+        working-directory: simulator
+        run: npm audit --audit-level=high

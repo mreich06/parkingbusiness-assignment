@@ -21,11 +21,14 @@ Run from `api/` unless noted. A command marked (todo) does not work yet.
 - Start the app and Postgres (repo root): `docker compose up -d` (todo)
 - Stop everything (repo root): `docker compose down` (todo)
 - Follow logs (repo root): `docker compose logs -f` (todo)
-- Test: `npm test` (todo)
-- Lint: `npm run lint` (todo)
+- Test: `npm test` (use Node 24: `nvm use 24`)
+- E2E test: `npm run test:e2e`
+- Lint: `npm run lint`
+- Typecheck: `npm run typecheck`
+- Build: `npm run build`
 - Create and apply a migration locally: `npx prisma migrate dev` (todo)
 - Apply existing migrations (CI/production): `npx prisma migrate deploy` (todo)
-- Regenerate the Prisma client after schema changes: `npx prisma generate` (todo)
+- Regenerate the Prisma client after schema changes: `npx prisma generate` (needs `DATABASE_URL` set; it never connects)
 - Install the simulator (from `simulator/`): `npm install`
 - Send a signed payment webhook (from `simulator/`): `WEBHOOK_SECRET=<secret> npm run send -- --session <parkingSessionId> --amount 1500`
   - Options: `--times 3` (provider retries), `--status FAILED`, `--url`, `--payment-id`. Amounts are in cents.
