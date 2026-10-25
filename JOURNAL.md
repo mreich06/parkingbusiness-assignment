@@ -81,3 +81,6 @@ Committed some changes already, saw more things to cut out, refined the spec:
 Asked agent to set up docker yml file, create database schema, migration and seed data
 It just added Zone, Space, Session which is all that is needed for PB-03 and looks good
 
+I asked agent to set up the check-in service and tests. Looks good. One small mistake - toUpperCase() was not used on the license plate, so I added it. 
+It properly checks for an existing plate first and throws 409 if existing, then claims the lowest free space and retries twice if the unique index rejects a collision
+

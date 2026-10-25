@@ -20,7 +20,7 @@ Run from `api/` unless noted. Prisma commands need `DATABASE_URL` set (local: `p
 - Start Postgres (repo root): `docker compose up -d db`
 - Stop Postgres (repo root): `docker compose down`
 - Follow logs (repo root): `docker compose logs -f`
-- Test: `npm test` (use Node 24: `nvm use 24`)
+- Test: `npm test` (use Node 24: `nvm use 24`; needs Postgres running and `DATABASE_URL` set)
 - E2E test: `npm run test:e2e`
 - Lint: `npm run lint`
 - Typecheck: `npm run typecheck`

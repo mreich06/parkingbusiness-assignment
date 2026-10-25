@@ -5,6 +5,18 @@ on: push
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://parkingbusiness:parkingbusiness@localhost:5432/parkingbusiness
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: parkingbusiness
+          POSTGRES_PASSWORD: parkingbusiness
+          POSTGRES_DB: parkingbusiness
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U parkingbusiness" --health-interval 5s --health-retries 10
     defaults:
       run:
         working-directory: api
@@ -16,9 +28,8 @@ jobs:
           cache: npm
           cache-dependency-path: api/package-lock.json
       - run: npm ci
+      - run: npx prisma migrate deploy
       - run: npx prisma generate
-        env:
-          DATABASE_URL: postgresql://user:pass@localhost:5432/db
       - run: npm run lint
       - run: npx tsc --noEmit
       # Backstop for the lint rules: catches console calls and skipped or focused tests even if someone adds an eslint-disable comment

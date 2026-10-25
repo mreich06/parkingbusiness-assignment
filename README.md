@@ -49,7 +49,7 @@ Run from `api/`.
 | Build | `npm run build` |
 | Regenerate the Prisma client | `npx prisma generate` (needs `DATABASE_URL`) |
 
-`npm test` and `npm run test:e2e` pass today because there are no tests yet (`--passWithNoTests`).
+Tests use the real database: start Postgres and set `DATABASE_URL` first.
 
 Tests run Jest in ESM mode, because Nest 12 is ESM-only. The npm scripts already pass the needed `--experimental-vm-modules` flag, so Node prints a harmless warning.
 
@@ -90,7 +90,7 @@ More options are in [simulator/README.md](simulator/README.md).
 6. `npm test`
 7. `npm audit --audit-level=high`, then the same audit in `simulator/`
 
-CI does not start Postgres yet.
+CI starts a Postgres 16 service, applies the migrations, then runs the tests against it.
 
 `api/package.json` pins `multer` to `^2.5.0` with an npm override, because Nest 12's `platform-express` pulls in a version with a high-severity advisory. Remove the override once Nest ships a fixed release.
 
