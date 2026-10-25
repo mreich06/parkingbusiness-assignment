@@ -69,3 +69,10 @@ Mistakes:
 - Way too long, too many requirements, assumptions, open questions for a small project. Irrelevant questions like "Q5. What do other countries' plates look like, and are letters like `Ö` needed?" 
 - Added "License plates are never written to logs" - true that PII data shouldn't be stripped before logging, but logging is out of scope and might confuse an agent who thinks the license plate shouldnt be added to the database
 - Added that a gate retry should be handled, and not create a duplicate session
+
+
+19:35
+Committed some changes already, saw more things to cut out, refined the spec:
+
+- Added "Definitions" section which is not part of template, removed it and trimmed the wording
+- hardcoded the prices and spaces, so I added "Model as data, not constants"
