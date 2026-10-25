@@ -98,3 +98,22 @@ I chose the most important:
 
 Total time for PB-02 + PB03 - 1 hour 20 minutes 
 Total percentage used: 14% of 5 hour limit
+
+------------------------------------------------------------------------------------------------------------------------------
+PB04
+Date: October 25
+21:55
+Traps in the brief I noticed: The brief mentions €5 per started hour for cars and €3 for motorcycles, but the example in PB-04 says a car checked in from 09:00 to 10:40 pays €8,33, which is inconsistent. I will used the started hour rule. In a real work environment, I would ask the lead/PM for clarification
+
+Some things I considered
+- Account for days of the year in which the time moves forward or back by an hour, this should not incorrectly over or undercharge a customer. The daily cap applies per Amsterdam calendar day, and days with 23 or 25 hours must charge by actual elapsed time
+Edge cases: 
+an unknown session (4xx error), a session already checked out (gate retry issue)
+
+I added new rules to write-spec to improve the spec editing process and reduce time for editing
+
+Asked agent to draft spec with Opus 5.5
+Mistakes:
+- The way it used currency was confusing. For example "AC2. Given a visitor motorcycle checked in at 09:00, when it checks out at 10:40, then `amountDue` is 600 EUR. (R5)". I asked it to clarify that the integer value is in cents, not euros 
+- This line "Gates SHOULD retry on 5xx and timeouts, a few times with exponential backoff." - Not the right approach, exponential backoff stops many clients from retrying at once to avoid overwhelming a server. Here, we only have 2 gates 
+- Too long again but better, with some questions and assumptions that can be dropped for a small project 
