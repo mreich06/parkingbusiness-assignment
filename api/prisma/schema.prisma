@@ -12,12 +12,30 @@ enum VehicleType {
   MOTOR
 }
 
+model Building {
+  id       String @id
+  timezone String
+  zones    Zone[]
+}
+
+// Price per started hour and cap per calendar day, in integer cents
+model Tariff {
+  id         Int    @id @default(autoincrement())
+  hourlyRate Int
+  dailyCap   Int
+  currency   String
+  zones      Zone[]
+}
+
 // What a group of spaces serves: residents (any vehicle) or visitors of one vehicle type
 model Zone {
   id          Int          @id @default(autoincrement())
   buildingId  String
+  building    Building     @relation(fields: [buildingId], references: [id])
   isResident  Boolean
   vehicleType VehicleType?
+  tariffId    Int
+  tariff      Tariff       @relation(fields: [tariffId], references: [id])
   spaces      Space[]
 }
 

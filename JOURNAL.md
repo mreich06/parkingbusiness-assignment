@@ -117,3 +117,6 @@ Mistakes:
 - The way it used currency was confusing. For example "AC2. Given a visitor motorcycle checked in at 09:00, when it checks out at 10:40, then `amountDue` is 600 EUR. (R5)". I asked it to clarify that the integer value is in cents, not euros 
 - This line "Gates SHOULD retry on 5xx and timeouts, a few times with exponential backoff." - Not the right approach, exponential backoff stops many clients from retrying at once to avoid overwhelming a server. Here, we only have 2 gates 
 - Too long again but better, with some questions and assumptions that can be dropped for a small project 
+
+22:20
+Asked agent for prisma models for PB-04. It correctly added Building and Tariff and linked them to Zone with buildingId and tariffId foreign keys
