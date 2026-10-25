@@ -58,6 +58,7 @@
       "ts"
     ],
     "rootDir": "src",
+    "maxWorkers": 1,
     "testRegex": ".*\\.spec\\.ts$",
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"

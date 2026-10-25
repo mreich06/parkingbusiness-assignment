@@ -2,7 +2,7 @@ import { ConflictException, Injectable, ServiceUnavailableException } from '@nes
 import { Prisma, VehicleType } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma.service.js';
 
-const BUILDING_ID = 'PB-AMS-2M8D';
+export const BUILDING_ID = 'PB-AMS-2M8D';
 const ATTEMPTS = 3; // the first try plus 2 retries
 
 export interface CheckInInput {
