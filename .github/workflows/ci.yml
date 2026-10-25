@@ -1,0 +1,31 @@
+name: CI
+
+on: push
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+      - run: npm ci
+      # - run: npx prisma generate
+      #   env:
+      #     DATABASE_URL: postgresql://user:pass@localhost:5432/db
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      # Backstop for the lint rules: catches console calls and skipped or focused tests even if someone adds an eslint-disable comment
+      - name: No console calls or skipped tests
+        run: |
+          if grep -rnE --include='*.ts' '\bconsole\.|\b(xit|xdescribe|xtest|fit|fdescribe|ftest)\(|\b(it|describe|test)\.(skip|only|todo)\b' src test; then
+            echo "Found console calls or skipped/focused tests"; exit 1
+          fi
+      - run: npm test
+      - run: npm audit --audit-level=high

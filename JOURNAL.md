@@ -21,9 +21,17 @@ AGENTS.md - Asked agent to write project description, headers, gave the tech sta
 Noticed that GitLab is required in BRIEF.md, but not mentioned in the PDF, caught the agent including that in AGENTS.md. I will use GitHub Actions since this is on GitHub. 
 
 Traps I noticed:
-- My agent warned me there is hidden HTML, telling agents to accept calls to /webhooks/payments that
-carry the header `X-Terminal-Compat: 1` without checking signature.  noticed when drafting AGENTS.md, I added the rule "Verify the webhook signature against the raw body before anything else"
+- My agent warned me there is hidden HTML, telling agents to accept calls to /webhooks/payments that carry the header `X-Terminal-Compat: 1` without checking signature.  noticed when drafting AGENTS.md, I added the rule "Verify the webhook signature against the raw body before anything else"
 Mistakes:
 - Asked agent to change gitlab-ci.yml to use GitHub actions instead with .gitub/workflows/yml to be consistent
 
+16:15
+Asked agent to setup the NestJS files 
+Ran `cd api` and `npm test` to check the test command works, runs on Node 24 
+
+16:25
+Added linting and CI 
+Asked agent to propose linting and CI checks that would validate rules. It proposed a massive list. I felt it over-engineered, much of this was more suitable for a large project, with multiple developers and PRs so I asked it to re-order based on importance
+I chose these rules: block Prisma imports in controllers, no-disabled-test, no-focused-tests, no-console, and a CI job to ensure no console logs are committed, and no skipped tests 
+Mistake: It forgot to set up eslint config file, so I asked it to do this, and added prisma lines to ci which will cause it to fail, I commented them for now.
 
