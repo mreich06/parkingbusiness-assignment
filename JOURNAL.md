@@ -123,3 +123,7 @@ Asked agent for prisma models for PB-04. It correctly added Building and Tariff 
 
 22:30
 Asked agent to implement pricing logic and tests. I thought of one case while reviewing that it didn't catch - a capped stay with the clock change happening at the same time- "car 20:00 to 00:30 over the 25-hour DST day, each day capped" A car parked for 25 hours with the clock moving back an hour should still be charged 25 hours. Could cause customer service issues if they think they're overcharged. I will leave it for now
+
+22:45
+The agent wrote the check-out service correctly and wrote the logic for the /check-out endpoint, and it correctly wrote the route, with tests checking the happy path, 401, and 404 and an idempotency check 
+Mistake: it should free a space that has been checked out so it can be reused, added the test
