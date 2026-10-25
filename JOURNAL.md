@@ -127,3 +127,9 @@ Asked agent to implement pricing logic and tests. I thought of one case while re
 22:45
 The agent wrote the check-out service correctly and wrote the logic for the /check-out endpoint, and it correctly wrote the route, with tests checking the happy path, 401, and 404 and an idempotency check 
 Mistake: it should free a space that has been checked out so it can be reused, added the test
+
+Ran /review. It found some tests are overlapping 
+I removed some tests for AC3 and AC6 tests and the "space freed" count since I realized the e2e tests already check the same things, through the real HTTP layer (guard, validation, error filter). Every AC still has a test
+
+Total time for PB-04: 1 hour 5 minutes 
+Total percentage used: 12% of 5 hour limit

@@ -32,14 +32,10 @@ const post = (payload: object | string, key: string | null = 'test-key') => {
   return (key ? req.set('X-Api-Key', key) : req).type('json').send(payload);
 };
 
-it('AC1: returns 200 with the space, length and amount due', async () => {
+it('AC1: returns 200 with the space, length and amount due, and frees the space', async () => {
   await post({ parkingSessionId: id, isResident: false })
     .expect(200)
     .expect({ parkingSpaceId: 51, sessionLengthInMinutes: 100, amountDue: { value: 1000, currency: 'EUR' } });
-});
-
-it('AC1: frees the space for a new check-in', async () => {
-  await post({ parkingSessionId: id, isResident: false }).expect(200);
   // Space 51 is the first visitor car space, so the next visitor car gets it only if it is free
   await request(app.getHttpServer() as Server)
     .post('/check-in')
@@ -49,12 +45,15 @@ it('AC1: frees the space for a new check-in', async () => {
     .expect((res) => expect(res.body.parkingSpaceId).toBe(51));
 });
 
-it('AC3: returns 200 with the same body for simultaneous and repeated check-outs', async () => {
+it('AC3: returns 200 with the same body for simultaneous and repeated check-outs, keeping the first end time', async () => {
   const body = { parkingSessionId: id, isResident: false };
-  const responses = [...(await Promise.all([post(body), post(body)])), await post(body)];
-  expect(responses.map((r) => r.status)).toEqual([200, 200, 200]);
-  expect(responses[1].body).toEqual(responses[0].body);
-  expect(responses[2].body).toEqual(responses[0].body);
+  const [first, second] = await Promise.all([post(body), post(body)]);
+  const { checkedOutAt } = await db.session.findUniqueOrThrow({ where: { id } });
+  const repeat = await post(body);
+  expect([first.status, second.status, repeat.status]).toEqual([200, 200, 200]);
+  expect(second.body).toEqual(first.body);
+  expect(repeat.body).toEqual(first.body);
+  expect((await db.session.findUniqueOrThrow({ where: { id } })).checkedOutAt).toEqual(checkedOutAt);
 });
 
 it('AC4: returns 401 without a valid key and leaves the session unchanged', async () => {
