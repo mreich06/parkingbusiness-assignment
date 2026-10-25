@@ -120,3 +120,6 @@ Mistakes:
 
 22:20
 Asked agent for prisma models for PB-04. It correctly added Building and Tariff and linked them to Zone with buildingId and tariffId foreign keys
+
+22:30
+Asked agent to implement pricing logic and tests. I thought of one case while reviewing that it didn't catch - a capped stay with the clock change happening at the same time- "car 20:00 to 00:30 over the 25-hour DST day, each day capped" A car parked for 25 hours with the clock moving back an hour should still be charged 25 hours. Could cause customer service issues if they think they're overcharged. I will leave it for now
