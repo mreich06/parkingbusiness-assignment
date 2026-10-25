@@ -29,9 +29,43 @@ Mistakes:
 Asked agent to setup the NestJS files 
 Ran `cd api` and `npm test` to check the test command works, runs on Node 24 
 
-16:25
+16:30
 Added linting and CI 
 Asked agent to propose linting and CI checks that would validate rules. It proposed a massive list. I felt it over-engineered, much of this was more suitable for a large project, with multiple developers and PRs so I asked it to re-order based on importance
 I chose these rules: block Prisma imports in controllers, no-disabled-test, no-focused-tests, no-console, and a CI job to ensure no console logs are committed, and no skipped tests 
 Mistake: It forgot to set up eslint config file, so I asked it to do this, and added prisma lines to ci which will cause it to fail, I commented them for now.
 
+Final notes: For write-spec, I asked agent to scaffold it with a name, description, a filled out "When to use", "Inputs", "Output" and also "Steps", "Checks" and "Rules" not filled out. Filled those parts out myself
+Asked agent to add README.md, added prisma modules so README is complete. During final review, agent caught avulnerable axios version in the webhook, so I asked it to upgrade the version to clear the audit, and added a CI step for it.
+
+Total time taken: 1 hour 15 minutes, without breaks
+My VSCode extension doesn't say total tokens. Total % of 5 hour limit on Pro plan: 12% 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+PB-02 + PB-03
+Date: October 25
+19:20
+Fresh session
+Model: Opus 5.5 to ensure good requirements, and a clear spec, so the implementation goes more smoothly
+For the spec template, the agent initially made up new sections for the write-spec template I asked it to draft. It wrote parts that are not in the brief (Non-goals, Test plan), so I removed them. 
+
+Rough schema, data model I thought of:
+My entities for PB-02: Tariff, Building, Zone, Space, Session
+Key decisions: Building has timezone, Session has licensePlate and check in/out times, 
+indexes: 
+- Partial unique indexes on space - one active session per space
+- Partial unique index on license plate - one active session per car 
+A transaction and the partial unique index on space prevent a space being given to more than one vehicle, with a retry being needed for a collision 
+
+Requirements, Questions, Assumptions I thought of so far
+- Drivers are marked resident or visitor during check-in
+- Residents park for free, motorcycles and cars both have a zone and tariff
+- What happens when the tariff price changes? Not mentioned in spec, so address this in PB-07
+- If all spaces taken, don't let the customer in, enforce at the gate
+
+I asked it to draft a spec for PB-03
+Mistakes: 
+- Way too long, too many requirements, assumptions, open questions for a small project. Irrelevant questions like "Q5. What do other countries' plates look like, and are letters like `Ö` needed?" 
+- Added "License plates are never written to logs" - true that PII data shouldn't be stripped before logging, but logging is out of scope and might confuse an agent who thinks the license plate shouldnt be added to the database
+- Added that a gate retry should be handled, and not create a duplicate session
