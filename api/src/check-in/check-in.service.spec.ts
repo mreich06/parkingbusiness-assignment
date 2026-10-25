@@ -50,3 +50,18 @@ it('AC8: uses a space whose zone was changed in the data', async () => {
     await db.space.update({ where: { id: space.id }, data: { zoneId: space.zoneId } });
   }
 });
+
+it('AC6: gives the last free space to only one of two simultaneous check-ins', async () => {
+  for (let round = 0; round < 10; round++) {
+    await db.session.deleteMany();
+    await fill(131, 149);
+    const results = await Promise.allSettled([
+      service.checkIn({ ...motor, licensePlate: 'MOTOR-1' }),
+      service.checkIn({ ...motor, licensePlate: 'MOTOR-2' }),
+    ]);
+    const rejected = results.filter((r) => r.status === 'rejected');
+    expect(rejected).toHaveLength(1);
+    expect(['NO_SPACE_AVAILABLE', 'CHECK_IN_CONTENDED']).toContain(rejected[0].reason.response.error);
+    expect(await db.session.count({ where: { spaceId: 150, checkedOutAt: null } })).toBe(1);
+  }
+});

@@ -84,3 +84,6 @@ It just added Zone, Space, Session which is all that is needed for PB-03 and loo
 I asked agent to set up the check-in service and tests. Looks good. One small mistake - toUpperCase() was not used on the license plate, so I added it. 
 It properly checks for an existing plate first and throws 409 if existing, then claims the lowest free space and retries twice if the unique index rejects a collision
 
+20:20
+Added the concurrency test with 10 rounds for two vehicles check in at the same moment. A vehicle gets one space, the other rejected as expected. AC1, AC4, AC5, AC6 and AC8 is now covered 
+I see 503 is not covered in this test, agent suggested covering it, but it only happens when a check-in loses a race 3 times in a row, I decided its not worth the extra code for this scale
