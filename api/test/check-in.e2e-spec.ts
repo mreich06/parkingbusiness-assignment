@@ -32,6 +32,11 @@ it('returns 201 with the session and space', async () => {
   expect(res.body).toEqual({ parkingSessionId: expect.any(String), parkingSpaceId: 51 });
 });
 
+it('returns 409 with the existing session id when the plate is already checked in', async () => {
+  const first = await post(body).expect(201);
+  await post(body).expect(409).expect({ error: 'ALREADY_CHECKED_IN', sessionId: first.body.parkingSessionId });
+});
+
 it('AC2: returns 401 without a valid key and creates nothing', async () => {
   await post(body, null).expect(401).expect({ error: 'UNAUTHORIZED' });
   await post(body, 'wrong').expect(401);
@@ -42,6 +47,7 @@ it.each([
   ['a missing field', { vehicleType: 'CAR', isResident: false }],
   ['a wrong type', { ...body, isResident: 'no' }],
   ['an invalid plate', { ...body, licensePlate: 'AB_123!' }],
+  ['a plate without letters or digits', { ...body, licensePlate: '---' }],
   ['an unknown field', { ...body, extra: 1 }],
   ['a body that is not JSON', '{oops'],
 ])('AC3: returns 400 for %s and creates nothing', async (_name, payload) => {

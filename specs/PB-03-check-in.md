@@ -18,7 +18,7 @@ An entrance gate can check a vehicle in, which starts a parking session and give
 ```
 POST /check-in
 Header:  X-Api-Key: <gate key>
-Request: { "vehicleType": "CAR" | "MOTOR", "isResident": boolean, "licensePlate": string (1–20 chars, letters, digits, spaces, hyphens) }
+Request: { "vehicleType": "CAR" | "MOTOR", "isResident": boolean, "licensePlate": string (1–20 chars: letters, digits, spaces, hyphens, with at least one letter or digit) }
 201:     { "parkingSessionId": "uuid", "parkingSpaceId": number }
 Error:   { "error": "<CODE>" } (409 ALREADY_CHECKED_IN also has "sessionId")
 ```

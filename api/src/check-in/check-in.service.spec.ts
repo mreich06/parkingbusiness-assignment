@@ -29,13 +29,16 @@ it('AC4: rejects the same plate written differently, with the existing session i
   await expect(service.checkIn({ ...car, licensePlate: 'ab 123 c' })).rejects.toMatchObject({
     response: { error: 'ALREADY_CHECKED_IN', sessionId: first.parkingSessionId },
   });
+  expect(await db.session.count()).toBe(1);
 });
 
 it('AC5: rejects when all matching spaces are taken', async () => {
   await fill(131, 150);
+  const before = await db.session.count();
   await expect(service.checkIn({ ...motor, licensePlate: 'MOTOR-1' })).rejects.toMatchObject({
     response: { error: 'NO_SPACE_AVAILABLE' },
   });
+  expect(await db.session.count()).toBe(before);
 });
 
 it('AC8: uses a space whose zone was changed in the data', async () => {

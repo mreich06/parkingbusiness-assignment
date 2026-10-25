@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Post, UseGuards } from '@nestjs/
 import { CheckInInput, CheckInService } from './check-in.service.js';
 import { GateKeyGuard } from './gate-key.guard.js';
 
-const PLATE = /^[A-Za-z0-9 -]{1,20}$/;
+const PLATE = /^(?=.*[A-Za-z0-9])[A-Za-z0-9 -]{1,20}$/;
 
 const isValid = (body: unknown): body is CheckInInput => {
   if (typeof body !== 'object' || body === null) return false;

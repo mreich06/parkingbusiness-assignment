@@ -77,6 +77,7 @@ Committed some changes already, saw more things to cut out, refined the spec:
 - Added "Definitions" section which is not part of template, removed it and trimmed the wording
 - hardcoded the prices and spaces, so I added "Model as data, not constants"
 
+Switched to Sonnet 5.5 here for the implementation
 19:49 
 Asked agent to set up docker yml file, create database schema, migration and seed data
 It just added Zone, Space, Session which is all that is needed for PB-03 and looks good
@@ -90,3 +91,10 @@ I see 503 is not covered in this test, agent suggested covering it, but it only 
 
 Then I did the endpoint, validation and authentication flow
 Mistake: the spec says to handle malformed requests with { "error": "INVALID_REQUEST" }, An e2e test showed this issue, so I had the agent fix it and add an error filter to match the spec.  
+Ran /review and it listed some missing AC's not covered
+I chose the most important:
+- test for 409 with the existing session id when the plate is already checked in
+- Review also found that a plate of only spaces or hyphens passed validation, so I added a "at least one letter or digit" rule to the spec and code
+
+Total time for PB-02 + PB03 - 1 hour 20 minutes 
+Total percentage used: 14% of 5 hour limit
