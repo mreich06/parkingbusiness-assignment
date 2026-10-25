@@ -33,6 +33,7 @@ export DATABASE_URL=postgresql://parkingbusiness:parkingbusiness@localhost:5432/
 npx prisma migrate deploy
 npx prisma generate
 
+export GATE_API_KEY=<choose a secret>   # gates send it in the X-Api-Key header
 npm run start:dev   # listens on port 3000, or $PORT
 ```
 

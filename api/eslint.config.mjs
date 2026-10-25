@@ -11,7 +11,7 @@ const localDateMethods = [
 ];
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'node_modules/**', 'generated/**', 'prisma/migrations/**'] },
+  { ignores: ['dist/**', 'node_modules/**', 'src/generated/**', 'prisma/migrations/**'] },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {

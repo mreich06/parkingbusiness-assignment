@@ -87,3 +87,6 @@ It properly checks for an existing plate first and throws 409 if existing, then 
 20:20
 Added the concurrency test with 10 rounds for two vehicles check in at the same moment. A vehicle gets one space, the other rejected as expected. AC1, AC4, AC5, AC6 and AC8 is now covered 
 I see 503 is not covered in this test, agent suggested covering it, but it only happens when a check-in loses a race 3 times in a row, I decided its not worth the extra code for this scale
+
+Then I did the endpoint, validation and authentication flow
+Mistake: the spec says to handle malformed requests with { "error": "INVALID_REQUEST" }, An e2e test showed this issue, so I had the agent fix it and add an error filter to match the spec.  

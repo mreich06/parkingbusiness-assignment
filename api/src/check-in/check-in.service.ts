@@ -1,15 +1,21 @@
 import { ConflictException, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { Prisma, VehicleType } from '../../generated/prisma/client.js';
+import { Prisma, VehicleType } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma.service.js';
 
 const BUILDING_ID = 'PB-AMS-2M8D';
 const ATTEMPTS = 3; // the first try plus 2 retries
 
+export interface CheckInInput {
+  vehicleType: VehicleType;
+  isResident: boolean;
+  licensePlate: string;
+}
+
 @Injectable()
 export class CheckInService {
   constructor(private readonly db: PrismaService) {}
 
-  async checkIn(input: { vehicleType: VehicleType; isResident: boolean; licensePlate: string }) {
+  async checkIn(input: CheckInInput) {
     const { vehicleType, isResident } = input;
     const licensePlate = input.licensePlate.toUpperCase().replace(/[\s-]/g, '');
 
