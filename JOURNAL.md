@@ -151,3 +151,12 @@ Questions, thoughts I have for payment:
 
 I asked the agent to generate a spec for PB-05, committing the generated version
 
+
+17:00
+Model: Opus 5.5 
+Spec mistakes by agent:
+- "The provider retries until it gets a 2xx, so 4xx responses are retried too" - For 404, a retry can't fix this, move to roadmap. 401 stays an error since sending 2xx means we accept unsigned calls. 409 is worth retrying since it's possible a provider's call reaches API before check out finishes  
+- The spec mentions comparing the webhook amount to an amountDue and returning a 422 error for a mismatch. This feels out of scope for a small project, I am trusting that the provider charges the same amount we gave the gate, since I don't know how they talk to each other. Checking that can go in the roadmap 
+
+I asked the agent to correct these, move the line about ignoring the hidden comment from Open Questions to Requirements, take out the 422 error and the amountDue
+It offered adding the outcome such as UNKNOWN_SESSION to the Payment table. I declined but it could be a roadmap item
