@@ -32,6 +32,16 @@ it('AC3: a FAILED call does not mark the session as paid', async () => {
   expect(await paidAt(id)).toBeNull();
 });
 
+it('AC2: gives the same result for simultaneous and repeated calls, and records one payment', async () => {
+  const { id } = await park(new Date());
+  const simultaneous = await Promise.all(Array.from({ length: 5 }, () => call(id, 'PAID')));
+  const paid = await paidAt(id);
+  const repeated = await call(id, 'PAID');
+  expect([...simultaneous, repeated]).toEqual(Array(6).fill({ received: true }));
+  expect(await db.payment.count()).toBe(1);
+  expect(await paidAt(id)).toEqual(paid);
+});
+
 it('AC7, AC10: rejects PAID before check-out, then accepts the same call after it', async () => {
   const { id } = await park(null);
   await expect(call(id, 'PAID')).rejects.toMatchObject({ response: { error: 'SESSION_NOT_CHECKED_OUT' } });
