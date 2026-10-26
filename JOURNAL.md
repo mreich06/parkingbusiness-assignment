@@ -133,3 +133,21 @@ I removed some tests for AC3 and AC6 tests and the "space freed" count since I r
 
 Total time for PB-04: 1 hour 5 minutes 
 Total percentage used: 12% of 5 hour limit
+
+------------------------------------------------------------------------------------------------------------------------------
+
+PB-05
+Date: October 26
+16:50
+
+To add to schema I listed earlier for PB03 and PB04, Payment should now be added for PB-05
+A few corrections to that earlier section I noticed: 
+line 54 - there's no explicit transaction in the check in. The partial unique index with retry is what prevents double booking
+line 70 - typo, this should read “PII data SHOULD be stripped”
+
+Questions, thoughts I have for payment:
+- Webhook keeps retrying until it gets a 2xx so what do we return for calls that can never succeed?
+- "the same call can arrive more than once" means we need idempotency enforced so there are no duplicate payment data recorded
+
+I asked the agent to generate a spec for PB-05, committing the generated version
+
