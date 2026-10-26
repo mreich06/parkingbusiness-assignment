@@ -27,13 +27,13 @@ git clone --recurse-submodules <repo-url>
 cd api
 npm ci
 
-# prisma.config.ts requires DATABASE_URL
+# Settings live in .env at the repo root. Set GATE_API_KEY (gates send it in X-Api-Key)
+# and WEBHOOK_SECRET (shared with the payment provider, signs POST /webhooks/payments)
+cp ../.env.example ../.env
 docker compose -f ../docker-compose.yml up -d db
-export DATABASE_URL=postgresql://parkingbusiness:parkingbusiness@localhost:5432/parkingbusiness
 npx prisma migrate deploy
 npx prisma generate
 
-export GATE_API_KEY=<choose a secret>   # gates send it in the X-Api-Key header
 npm run start:dev   # listens on port 3000, or $PORT
 ```
 
@@ -48,9 +48,9 @@ Run from `api/`.
 | Unit tests | `npm test` |
 | E2E tests | `npm run test:e2e` |
 | Build | `npm run build` |
-| Regenerate the Prisma client | `npx prisma generate` (needs `DATABASE_URL`) |
+| Regenerate the Prisma client | `npx prisma generate` (reads `DATABASE_URL` from `.env`) |
 
-Tests use the real database: start Postgres and set `DATABASE_URL` first.
+Tests use the real database: start Postgres first. All commands read `DATABASE_URL` and the other settings from `.env`.
 
 Tests run Jest in ESM mode, because Nest 12 is ESM-only. The npm scripts already pass the needed `--experimental-vm-modules` flag, so Node prints a harmless warning.
 
@@ -67,12 +67,11 @@ Some rules in [AGENTS.md](AGENTS.md) are enforced by ESLint (`api/eslint.config.
 
 ## Payment webhook simulator
 
-`simulator/` sends signed payment confirmations, the way the payment provider does. The webhook endpoint it calls (`/webhooks/payments`) is not built yet.
+`simulator/` sends signed payment confirmations to `/webhooks/payments`, the way the payment provider does. It signs with `WEBHOOK_SECRET` from the root `.env`, so use the same `.env` as the API.
 
 ```bash
 cd simulator
 npm install
-export WEBHOOK_SECRET=<the secret your API uses to verify payment calls>
 npm run send -- --session <parkingSessionId> --amount 1500
 npm test    # tests for the signing code
 ```
