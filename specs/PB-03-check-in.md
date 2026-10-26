@@ -1,6 +1,6 @@
 # PB-03 Check in
 
-Status: Draft · Date: 2026-10-25 · Story: PB-03 in BRIEF.md
+Status: Implemented · Date: 2026-10-25 · Story: PB-03 in BRIEF.md
 
 ## Goal
 An entrance gate can check a vehicle in, which starts a parking session and gives the vehicle a free space of the right kind, even when both gates call at the same moment.

@@ -1,6 +1,6 @@
 # PB-04 Check out
 
-Status: Draft · Date: 2026-10-25 · Story: PB-04 in BRIEF.md
+Status: Implemented · Date: 2026-10-25 · Story: PB-04 in BRIEF.md
 
 ## Goal
 An exit gate can check out a session in progress, which ends the session, frees its space and tells the driver what to pay.

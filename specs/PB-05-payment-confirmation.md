@@ -1,6 +1,6 @@
 # PB-05 Payment confirmation
 
-Status: Draft · Date: 2026-10-26 · Story: PB-05 in BRIEF.md
+Status: Implemented · Date: 2026-10-26 · Story: PB-05 in BRIEF.md
 
 ## Goal
 The payment provider can tell the API that a checked-out session was paid, which marks the session as paid so the exit gate can open.
