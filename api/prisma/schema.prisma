@@ -57,4 +57,20 @@ model Session {
   licensePlate String
   checkedInAt  DateTime  @default(now()) @db.Timestamptz
   checkedOutAt DateTime? @db.Timestamptz
+  paidAt       DateTime? @db.Timestamptz
+  payments     Payment[]
+}
+
+enum PaymentStatus {
+  PAID
+  FAILED
+}
+
+// One accepted call from the payment provider. paymentId is unique, so a repeated call cannot be recorded twice
+model Payment {
+  paymentId  String        @id
+  sessionId  String        @db.Uuid
+  session    Session       @relation(fields: [sessionId], references: [id])
+  status     PaymentStatus
+  receivedAt DateTime      @default(now()) @db.Timestamptz
 }

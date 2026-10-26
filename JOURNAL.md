@@ -160,3 +160,6 @@ Spec mistakes by agent:
 
 I asked the agent to correct these, move the line about ignoring the hidden comment from Open Questions to Requirements, take out the 422 error and the amountDue
 It offered adding the outcome such as UNKNOWN_SESSION to the Payment table. I declined but it could be a roadmap item
+
+17:20
+Asked agent to generate schema from the spec, looks good
