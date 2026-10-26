@@ -169,3 +169,14 @@ Asked agent to write the payment service logic and tests. PAID marks the session
 
 22:30
 Next step is a idempotency check, I asked the agent to implement this to ensure repeated PAID calls result in only one payment stored. It sends the same call 5 times at once, covering concurrent retries 
+
+I had the agent implement the webhook signature and validation. 
+
+Several mistakes. It claimed to verify the signature before anything else, but Nest parsed the JSON first, and patched around it with a signature check inside the error filter. The webhook route now gets the raw bytes with body-parser, the controller checks the signature first, parses and validates. The filter workaround is taken out
+
+The tests it generated were too extensive, it has more cases than the ACs need. Like a missing secret, and extra validation variants (empty paymentId, wrong currency). I feel this are adding bulk to the test, so I trimmed them down to what tests core functionality and errors
+
+ I ran /review and didn't find anything that would be vital to add without adding bloat
+
+Total time taken: 1 hour 20 minutes
+Total % of 5 hour limit: 20% 
