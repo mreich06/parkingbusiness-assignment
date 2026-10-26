@@ -188,3 +188,12 @@ Date: October 26, 23:27
 Model: Opus 5.5 
 
 Drafted spec, committing the first generated version
+
+Some mistakes I saw:
+- AC1 hardcodes "150 spaces", the wording should be "all spaces of the building"
+- Requirement The response MUST NOT contain personal data (license plates) or session ids.” is not needed, the error body is a fixed 500 response that doesn't send plate data 
+- Rate limiting mentioned twice, leave as open question since the brief doesn't ask for it and I'd rather keep the design simple, but its a good thing to consider later
+- It assumes vehicleType is CAR for spaces 1-50 which is not true since we set that to null for residents, their section doesn't have a designated vehicleType. I choose to extend the API contract to include null
+
+ I took out two irrelevant questions and asked it to rewrite the spec using this feedback
+
