@@ -8,7 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "send": "node send-webhook.mjs",
+    "send": "node --env-file-if-exists=../.env send-webhook.mjs",
     "test": "node --test"
   },
   "dependencies": {
