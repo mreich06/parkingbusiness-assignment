@@ -197,3 +197,9 @@ Some mistakes I saw:
 
  I took out two irrelevant questions and asked it to rewrite the spec using this feedback
 
+ I asked the agent to implement the code for the occupancy endpoints and its tests
+ In the review, it found restoreAllMocks was missing, which undoes the fake database failure from AC4, so that was added. The rest of the implementation looked complete and the tests covered the AC in the spec
+
+Total time taken: 35 minutes
+Total % of 5 hour limit: 9% 
+

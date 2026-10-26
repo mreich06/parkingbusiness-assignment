@@ -1,6 +1,6 @@
 # PB-06 Occupancy
 
-Status: Draft · Date: 2026-10-26 · Story: PB-06 in BRIEF.md
+Status: Implemented · Date: 2026-10-26 · Story: PB-06 in BRIEF.md
 
 ## Goal
 Anyone, including the public entrance display, can see for every space whether it is taken, so the display can show when the garage is full for a vehicle type.
