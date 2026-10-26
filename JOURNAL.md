@@ -163,3 +163,6 @@ It offered adding the outcome such as UNKNOWN_SESSION to the Payment table. I de
 
 17:20
 Asked agent to generate schema from the spec, looks good
+
+17:30
+Asked agent to write the payment service logic and tests. PAID marks the session paid with a single update, FAILED is accepted but doesn't mark the session paid. The payment is saved only when the call is accepted. I didn't find any issues in the code
