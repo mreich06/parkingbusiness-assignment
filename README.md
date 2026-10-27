@@ -46,6 +46,13 @@ curl -X POST localhost:3000/check-in -H "X-Api-Key: <GATE_API_KEY from .env>" -H
   -d '{"vehicleType":"CAR","isResident":false,"licensePlate":"AB-123-C"}'
 ```
 
+Then check out. The response has the `amountDue` in cents to send with the simulator:
+
+```bash
+curl -X POST localhost:3000/check-out -H "X-Api-Key: <GATE_API_KEY from .env>" -H 'content-type: application/json' \
+  -d '{"parkingSessionId":"<parkingSessionId>","isResident":false}'
+```
+
 ## Commands
 
 Run from `api/`.
@@ -60,8 +67,6 @@ Run from `api/`.
 | Regenerate the Prisma client | `npx prisma generate` (reads `DATABASE_URL` from `.env`) |
 
 Tests use the real database: start Postgres first. Tests delete all sessions and payments in that database, so point `DATABASE_URL` at a local or CI database only. All commands read `DATABASE_URL` and the other settings from `.env`.
-
-Tests run Jest in ESM mode, because Nest 12 is ESM-only. The npm scripts already pass the needed `--experimental-vm-modules` flag, so Node prints a harmless warning.
 
 ## Lint rules
 
@@ -121,18 +126,3 @@ A second repository, such as a frontend, uses the same rules and skills like thi
 3. Write its own `AGENTS.md` with only its own stack, commands and rules, and point it to `.agent-context/AGENTS.md` for the shared ones (`CLAUDE.md` imports both).
 
 A change to a shared rule or skill goes into the agent-context repository once. Each repository picks it up with `git submodule update --remote`.
-
-## Repository layout
-
-```
-api/             NestJS app (src/, prisma/, test/)
-simulator/       payment provider simulator
-specs/           one spec per feature, written before the code
-.agent-context/  shared agent rules and skills (git submodule)
-.claude/skills/  link to the skills in .agent-context
-.github/         CI workflow
-BRIEF.md         the assignment
-ROADMAP.md       suggested next features (PB-07)
-AGENTS.md        instructions for agents
-JOURNAL.md       decision log
-```
