@@ -214,3 +214,13 @@ The Postgres password in docker-compose.yml is a dev credential for a local data
 Earlier, I skipped the 503 test in PB-03 since it’s highly unlikely to happen for a single parking garage but it's not a good reason to leave a path untested, so I added the test
 
 Ran a fresh clone to see if everything still works. Agent found the check in and check out tests failed when a payment was left in the database, so they now delete payments before sessions
+
+While writing ROADMAP.md, I noticed the API hardcodes BUILDING_ID although the schema supports several buildings. I'm writing it here as a known gap since I'm out of time
+
+Bonus: agent-context
+My shared rules and skills (write-spec, review) live in their own repository, https://github.com/mreich06/agent-context which this repo uses as a git submodule at .agent-context/ Project-specific rules are in this repo's AGENTS.md. Its readme shows how a second repo would add the submodule, link skills and pick up rule changes
+
+Total time for PB-07 + final review: 45 minutes
+Total % of 5 hour limit: 6%
+
+Total time for project: 6 hours 20 minutes
