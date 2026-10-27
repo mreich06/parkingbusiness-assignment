@@ -18,6 +18,7 @@ beforeAll(async () => {
 });
 // A visitor car on space 51, checked in 100 minutes ago
 beforeEach(async () => {
+  await db.payment.deleteMany();
   await db.session.deleteMany();
   const checkedInAt = new Date(Date.now() - 100 * 60_000);
   ({ id } = await db.session.create({ data: { spaceId: 51, licensePlate: 'AB-123-C', checkedInAt } }));

@@ -1,3 +1,4 @@
+import { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma.service.js';
 import { CheckInService } from './check-in.service.js';
 
@@ -12,7 +13,10 @@ const fill = async (from: number, to: number) => {
   await db.session.createMany({ data: spaces.map((s) => ({ spaceId: s.id, licensePlate: `FILL${s.number}` })) });
 };
 
-beforeEach(() => db.session.deleteMany());
+beforeEach(async () => {
+  await db.payment.deleteMany();
+  await db.session.deleteMany();
+});
 afterAll(() => db.$disconnect());
 
 it('AC1: gives each vehicle a space of its kind', async () => {
@@ -56,6 +60,7 @@ it('AC8: uses a space whose zone was changed in the data', async () => {
 
 it('AC6: gives the last free space to only one of two simultaneous check-ins', async () => {
   for (let round = 0; round < 10; round++) {
+    await db.payment.deleteMany();
     await db.session.deleteMany();
     await fill(131, 149);
     const results = await Promise.allSettled([
@@ -67,4 +72,26 @@ it('AC6: gives the last free space to only one of two simultaneous check-ins', a
     expect(['NO_SPACE_AVAILABLE', 'CHECK_IN_CONTENDED']).toContain(rejected[0].reason.response.error);
     expect(await db.session.count({ where: { spaceId: 150, checkedOutAt: null } })).toBe(1);
   }
+});
+
+it('AC6: gives up with CHECK_IN_CONTENDED after 2 retries when the chosen space keeps being taken', async () => {
+  // Every insert loses the race, as if another check-in took the space each time
+  let inserts = 0;
+  const contended = {
+    session: {
+      findFirst: db.session.findFirst.bind(db.session),
+      create: () => {
+        inserts++;
+        return Promise.reject(new Prisma.PrismaClientKnownRequestError('taken', { code: 'P2002', clientVersion: 'test' }));
+      },
+    },
+    space: db.space,
+  } as unknown as PrismaService;
+
+  await expect(new CheckInService(contended).checkIn({ ...car, licensePlate: 'CAR-1' })).rejects.toMatchObject({
+    status: 503,
+    response: { error: 'CHECK_IN_CONTENDED' },
+  });
+  expect(inserts).toBe(3);
+  expect(await db.session.count()).toBe(0);
 });

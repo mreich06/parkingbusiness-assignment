@@ -203,3 +203,14 @@ Some mistakes I saw:
 Total time taken: 35 minutes
 Total % of 5 hour limit: 9% 
 
+------------------------------------------------------------------------------------------------------------------------------
+
+Date: October 27, 9:41
+PB-07, final review, test fresh clone
+
+Gaps/fixes:
+The Postgres password in docker-compose.yml is a dev credential for a local database that only has seed data. POSTGRES_PASSWORD in .env overrides it. I left removing it as a known gap because I didn't have time to test changing it
+
+Earlier, I skipped the 503 test in PB-03 since it’s highly unlikely to happen for a single parking garage but it's not a good reason to leave a path untested, so I added the test
+
+Ran a fresh clone to see if everything still works. Agent found the check in and check out tests failed when a payment was left in the database, so they now delete payments before sessions

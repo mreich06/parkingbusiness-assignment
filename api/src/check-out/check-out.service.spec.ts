@@ -8,7 +8,10 @@ const service = new CheckOutService(db);
 const park = (spaceId: number) =>
   db.session.create({ data: { spaceId, licensePlate: `P${spaceId}`, checkedInAt: new Date(Date.now() - 100 * 60_000) } });
 
-beforeEach(() => db.session.deleteMany());
+beforeEach(async () => {
+  await db.payment.deleteMany();
+  await db.session.deleteMany();
+});
 afterAll(() => db.$disconnect());
 
 it.each([

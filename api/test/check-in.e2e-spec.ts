@@ -16,7 +16,10 @@ beforeAll(async () => {
   await app.init();
   db = app.get(PrismaService);
 });
-beforeEach(() => db.session.deleteMany());
+beforeEach(async () => {
+  await db.payment.deleteMany();
+  await db.session.deleteMany();
+});
 afterAll(async () => {
   await app.close();
   await db.$disconnect();
